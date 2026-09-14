@@ -4,9 +4,16 @@ using CatFact;
 
 var client = new HttpClient();
 
-/*
-    using (StreamWriter outputFile = new StreamWriter("CatFact.txt", true))
-    {
-        outputFile.WriteLine($"Length: {catfact.length} Fact: {catfact.fact}");
-    }
-*/
+var catFactService = new CatFactService(client);
+
+var catFact = await catFactService.GetCatFact();
+
+var catFactFileWriter = new CatFactFileWriter();
+
+if (catFact == null)
+{
+    Console.WriteLine("Nie mozna pobrac danych");
+    return;
+}
+
+catFactFileWriter.Save(catFact);
